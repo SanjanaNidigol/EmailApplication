@@ -1,0 +1,284 @@
+<!-- <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Email App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0 text-center">Create Account</h3>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                        
+                        <form th:action="@{/signup}" th:object="${user}" method="post">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="date" th:field="*{date}">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Gender</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="male" value="Male">
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="female" value="Female">
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="other" value="Other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" th:field="*{phone}">
+                                    <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" th:field="*{city}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="state" class="form-label">State</label>
+                                    <input type="text" class="form-control" id="state" th:field="*{state}">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="country" th:field="*{country}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pin" class="form-label">PIN Code</label>
+                                    <input type="text" class="form-control" id="pin" th:field="*{pin}">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center">
+                            <p>Already have an account? <a th:href="@{/}" class="text-decoration-none">Login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Email App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0 text-center">Create Account</h3>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                        
+                        <form th:action="@{/signup}" th:object="${user}" method="post" id="signupForm">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" th:field="*{password}" 
+                                           minlength="6" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="date" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                                    <div class="invalid-feedback" id="dateError"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Gender</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="male" value="Male" required>
+                                        <label class="form-check-label" for="male">Male</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="female" value="Female">
+                                        <label class="form-check-label" for="female">Female</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" th:field="*{gender}" id="other" value="Other">
+                                        <label class="form-check-label" for="other">Other</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control" id="phone" th:field="*{phone}" 
+                                           pattern="[0-9]{10}" title="Phone number must be 10 digits" required>
+                                    <div class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" th:field="*{city}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="state" class="form-label">State</label>
+                                    <input type="text" class="form-control" id="state" th:field="*{state}" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="country" th:field="*{country}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pin" class="form-label">PIN Code</label>
+                                    <input type="text" class="form-control" id="pin" th:field="*{pin}" 
+                                           pattern="[0-9]{6}" title="PIN code must be 6 digits" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center">
+                            <p>Already have an account? <a th:href="@{/}" class="text-decoration-none">Login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('signupForm');
+        const dateInput = document.getElementById('date');
+        const dateError = document.getElementById('dateError');
+        const phoneInput = document.getElementById('phone');
+        const pinInput = document.getElementById('pin');
+        
+        // Date validation: No future dates and minimum age of 10 years
+        dateInput.addEventListener('change', validateDate);
+        
+        // Phone validation: Only numbers
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        
+        // PIN validation: Only numbers
+        pinInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 6) {
+                this.value = this.value.slice(0, 6);
+            }
+        });
+        
+        // Validate date on form submission
+        form.addEventListener('submit', function(event) {
+            if (!validateDate()) {
+                event.preventDefault();
+            }
+        });
+        
+        function validateDate() {
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            
+            // Calculate minimum date (10 years ago)
+            const minDate = new Date();
+            minDate.setFullYear(today.getFullYear() - 10);
+            
+            // Reset validation status
+            dateInput.classList.remove('is-invalid');
+            dateError.textContent = '';
+            
+            // Check if date is in the future
+            if (selectedDate > today) {
+                dateInput.classList.add('is-invalid');
+                dateError.textContent = 'Birth date cannot be in the future';
+                return false;
+            }
+            
+            // Check minimum age
+            if (selectedDate > minDate) {
+                dateInput.classList.add('is-invalid');
+                dateError.textContent = 'Minimum age requirement is 10 years';
+                return false;
+            }
+            
+            return true;
+        }
+    });
+    </script>
+</body>
+</html>

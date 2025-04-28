@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Email App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style="min-height: 100vh;">
+                <div class="position-sticky pt-3">
+                    <div class="text-center mb-4">
+                        <h4>Email App</h4>
+                        <p th:text="${session.loggedInUser.email}" class="text-muted"></p>
+                    </div>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a th:class="${activeTab == 'inbox' ? 'nav-link active' : 'nav-link'}" 
+                               th:href="@{/home}">
+                                <i class="bi bi-inbox"></i> Inbox
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:class="${activeTab == 'compose' ? 'nav-link active' : 'nav-link'}" 
+                               th:href="@{/compose}">
+                                <i class="bi bi-pencil-square"></i> Compose Mail
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:class="${activeTab == 'sent' ? 'nav-link active' : 'nav-link'}" 
+                               th:href="@{/sent}">
+                                <i class="bi bi-send"></i> Sent
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:class="${activeTab == 'trash' ? 'nav-link active' : 'nav-link'}" 
+                               th:href="@{/trash}">
+                                <i class="bi bi-trash"></i> Trash
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:class="${activeTab == 'profile' ? 'nav-link active' : 'nav-link'}" 
+                               th:href="@{/profile}">
+                                <i class="bi bi-person-circle"></i> Profile
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Inbox</h1>
+                    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Sender</th>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${mails.empty}">
+                                <td colspan="4" class="text-center">No messages in your inbox</td>
+                            </tr>
+                            <tr th:each="mail : ${mails}">
+                                <td th:text="${mail.sender}"></td>
+                                <td th:text="${mail.subject}"></td>
+                                <td th:text="${#temporals.format(mail.messageDate, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary view-mail" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#viewMailModal"
+                                            th:data-id="${mail.id}"
+                                            th:data-sender="${mail.sender}"
+                                            th:data-subject="${mail.subject}"
+                                            th:data-message="${mail.message}"
+                                            th:data-date="${#temporals.format(mail.messageDate, 'dd-MM-yyyy HH:mm')}">
+                                        <i class="bi bi-eye"></i> View
+                                    </button>
+                                    <a th:href="@{/trash/{id}(id=${mail.id})}" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Trash
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="viewMailModal" tabindex="-1" aria-labelledby="viewMailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewMailModalLabel">View Mail</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">From:</label>
+                        <div id="mailSender"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject:</label>
+                        <div id="mailSubject"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Date:</label>
+                        <div id="mailDate"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message:</label>
+                        <div id="mailMessage" class="border p-3 rounded" style="min-height: 150px;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#" id="trashMailBtn" class="btn btn-danger">Move to Trash</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to logout?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a th:href="@{/logout}" class="btn btn-primary">Yes, Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.view-mail').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const sender = this.getAttribute('data-sender');
+                    const subject = this.getAttribute('data-subject');
+                    const message = this.getAttribute('data-message');
+                    const date = this.getAttribute('data-date');
+                    
+                    document.getElementById('mailSender').textContent = sender;
+                    document.getElementById('mailSubject').textContent = subject;
+                    document.getElementById('mailMessage').textContent = message;
+                    document.getElementById('mailDate').textContent = date;
+                    document.getElementById('trashMailBtn').href = '/trash/' + id;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
